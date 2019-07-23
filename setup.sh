@@ -14,6 +14,50 @@ fi
 
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
+# System Settings
+
+echo "System Setup - Require password immediately after sleep or screen saver begins"
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+echo "Disable the “Are you sure you want to open this application?” dialog"
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+echo "Wipe all (default) app icons from the Dock"
+echo "This is only really useful when setting up a new Mac, or if you don’t use"
+echo "the Dock to launch apps."
+defaults write com.apple.dock persistent-apps -array
+
+echo "Dark menu bar and dock"
+defaults write $HOME/Library/Preferences/.GlobalPreferences.plist AppleInterfaceTheme -string "Dark"
+
+echo "Use list view in all Finder windows by default"
+echo "Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`"
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+
+echo "Configuring screenshots to save in Screenshots"
+defaults write com.apple.screencapture location ~/Screenshots
+killall SystemUIServer
+
+# Mousr
+
+# Note: Need to add double finger tap to right click as automated setting.
+
+# Safari
+
+echo "Privacy: don’t send search queries to Apple"
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+
+# Photos
+
+echo "Prevent Photos from opening automatically when devices are plugged in"
+defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
+
+# Set macOS preferences
+# We will run this last because this will reload the shell
+# source .macos # need this?
+
 # Install Homebrew Packages
 
 cd ~
